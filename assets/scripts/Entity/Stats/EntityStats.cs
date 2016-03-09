@@ -2,7 +2,8 @@
 
 public class EntityStats {
 
-	public int playerId;
+	public int id;
+	public int commanderId;
 
 	public enum BasicType { BasicTypeBuilding, BasicTypeUnit };
 	public BasicType basicType;
