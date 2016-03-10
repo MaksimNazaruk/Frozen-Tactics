@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EntityBehaviour : MonoBehaviour {
 
 	public EntityStats stats;
+
+	public List<EntityAction> availableActions;
+	public List<EntityCommand> commandsToPerform;
 
 	bool isSelected = false;
 	public bool IsSelected {
@@ -20,12 +24,24 @@ public class EntityBehaviour : MonoBehaviour {
 	protected virtual void Start () {
 	
 		SetupStats ();
+		SetupAvailableActions ();
+		SetupCommands ();
 		SetupEntityUI ();
 	}
 
 	protected virtual void SetupStats () {
 
 		Debug.LogError ("SetupStats() method should be implemented in derived classes");
+	}
+
+	protected virtual void SetupAvailableActions () {
+
+		Debug.LogError ("SetupActions() method should be implemented in derived classes");
+	}
+
+	protected virtual void SetupCommands () {
+
+		commandsToPerform = new List<EntityCommand> ();
 	}
 		
 	// setups selection ring, maybe healthbars, path line, etc
@@ -40,9 +56,25 @@ public class EntityBehaviour : MonoBehaviour {
 		selectionRenderer.enabled = false;
 	}
 
-	protected virtual void Update () {
+	/// <summary>
+	/// Adds the command with provided action.
+	/// </summary>
+	/// <param name="action">Action.</param>
+	/// <param name="target">Target.</param>
+	public void AddCommandWithActionAndTarget(EntityAction action, ActionTarget target) {
 
-		Debug.Log ("entity Update");
+		EntityCommand command = new EntityCommand ();
+		command.action = action;
+		command.target = target;
+
+		commandsToPerform.Add (command);
+	}
+
+
+	/// <summary>
+	/// Default Unity3D Update callback
+	/// </summary>
+	protected virtual void Update () {
 
 		if (GameplayManager.SharedInstance ().isRealtime) {
 			UpdateRealTime ();
@@ -51,13 +83,17 @@ public class EntityBehaviour : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Update callback that is called only when GameManager is set to realtime mode
+	/// </summary>
 	protected virtual void UpdateRealTime () {
 
-		Debug.Log("UpdateRealTime Entity");
 	}
 
+	/// <summary>
+	/// Update callback that is called only when GameManager is set to frozen mode
+	/// </summary>
 	protected virtual void UpdateFrozenTime () {
 
-		Debug.Log("UpdateFrozenTime Entity");
 	}
 }

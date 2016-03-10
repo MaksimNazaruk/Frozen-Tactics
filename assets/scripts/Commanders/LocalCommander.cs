@@ -3,13 +3,23 @@ using System.Collections;
 
 public class LocalCommander : Commander {
 
-	// Use this for initialization
-	void Start () {
-	
+	public EntityBehaviour selectedEntity = null; // TODO: consider multiple selection
+
+	public EntityAction[] AvailableActionsOfSelectedEntity () {
+
+		if (selectedEntity == null) {
+			return null;
+		} else {
+			return selectedEntity.availableActions.ToArray ();
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public void AddCommantForSelectedEntityWithActionAndTarget(EntityAction action, ActionTarget target) {
+
+		if (selectedEntity == null) {
+			return;
+		} 
+
+		selectedEntity.AddCommandWithActionAndTarget (action, target);
 	}
 }

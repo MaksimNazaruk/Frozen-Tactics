@@ -7,9 +7,6 @@ public class DefaultUnitBehaviour : UnitBehaviour {
 	protected override void Start () {
 	
 		base.Start ();
-
-		// debug
-		SetDestinationPoint (new Vector3(15, 0, 15));
 	}
 
 	protected override void SetupStats () {

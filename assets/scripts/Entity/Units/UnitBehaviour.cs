@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class UnitBehaviour : EntityBehaviour {
 
@@ -7,10 +8,6 @@ public class UnitBehaviour : EntityBehaviour {
 
 	// navigation
 	NavMeshAgent navMeshAgent;
-	Vector3 destinationPoint;
-	public void SetDestinationPoint (Vector3 newDestinationPoint) {
-		destinationPoint = newDestinationPoint;
-	}
 
 	// Use this for initialization
 	protected override void Start () {
@@ -20,10 +17,27 @@ public class UnitBehaviour : EntityBehaviour {
 		SetupNavMeshAgent ();
 	}
 
+	/// <summary>
+	/// setups basic stats, common for all the units
+	/// </summary>
 	protected override void SetupStats () {
 
 		stats = new UnitStats ();
 		stats.basicType = EntityStats.BasicType.BasicTypeUnit;
+	}
+
+	/// <summary>
+	/// setups default available actions, common for all the units 
+	/// </summary>
+	protected override void SetupAvailableActions () {
+
+		availableActions = new List<EntityAction> ();
+
+		// basic Move action
+		EntityAction moveAction = new EntityAction ();
+		moveAction.title = "Move";
+		moveAction.isTargetRequired = true;
+		moveAction.actionMethod = new EntityActionMethod (MoveToTarget);
 	}
 
 	void SetupNavMeshAgent () {
@@ -44,12 +58,19 @@ public class UnitBehaviour : EntityBehaviour {
 		navMeshAgent.radius = stats.size / 2.0f;
 	}
 
+	// ########## Action Methods ###########
+
+	void MoveToTarget(ActionTarget target) {
+
+		navMeshAgent.SetDestination (target.Position);
+	}
+
+	// ########## Update methods ###########
+
 	protected override void UpdateRealTime () {
 
 		base.UpdateRealTime ();
 
-		// TODO: set destination only once. maybe set it to null when there's no destination
-		navMeshAgent.destination = destinationPoint;
 		navMeshAgent.Resume ();
 	}
 

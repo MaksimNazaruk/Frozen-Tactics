@@ -48,7 +48,7 @@ public class GameplayManager {
 
 	public void AddCommanderWithType(CommanderType commanderType) {
 
-		Commander commander;
+		Commander commander = null;
 
 		switch (commanderType) {
 		case CommanderType.LocalCommanderType:
@@ -64,12 +64,12 @@ public class GameplayManager {
 			break;
 		}
 
-		if (commander) {
+		if (commander != null) {
 			commander.commanderId = commanders.Count;
 			commander.commanderType = commanderType;
 			commanders.Add (commander);
 
-			// TODO: make a proper logic for selecting current local commander
+			// TODO: make a proper logic for selecting current local commander, for now it's just the last created local commander
 			if (commanderType == CommanderType.LocalCommanderType) {
 				currentLocalCommanderId = commander.commanderId;
 			}
@@ -78,7 +78,7 @@ public class GameplayManager {
 
 	// ####### Entity ID logic #########
 
-	Dictionary<Commander, int> lastEntityIdForCommanders;
+	Dictionary<Commander, int> lastEntityIdForCommanders = new Dictionary<Commander, int>();
 
 	public int NextEntityIdForCommanderId(int commanderId) {
 
@@ -86,7 +86,7 @@ public class GameplayManager {
 
 		int nextId = -1;
 
-		if (commander) {
+		if (commander != null) {
 
 			int lastId = lastEntityIdForCommanders [commander];
 			nextId = lastId + commanders.Count;

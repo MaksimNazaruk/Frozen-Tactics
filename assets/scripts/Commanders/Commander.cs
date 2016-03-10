@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-enum CommanderType { LocalCommanderType, RemoteCommanderType, CPUCommanderType };
+public enum CommanderType { LocalCommanderType, RemoteCommanderType, CPUCommanderType };
 
 public class Commander {
 
@@ -11,4 +11,7 @@ public class Commander {
 
 	List<UnitBehaviour> allUnits;
 	List<BuildingBehaviour> allBuildings;
+
+
+
 }
