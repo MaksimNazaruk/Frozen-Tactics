@@ -22,7 +22,9 @@ public class EntityBehaviour : MonoBehaviour {
 	GameObject selectionObject;
 
 	protected virtual void Start () {
-	
+
+		gameObject.layer = LayerMask.NameToLayer ("Entities");
+
 		SetupStats ();
 		SetupAvailableActions ();
 		SetupCommands ();

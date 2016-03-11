@@ -459,6 +459,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 314377003}
+  - 114: {fileID: 314377002}
   m_Layer: 0
   m_Name: UI Manager
   m_TagString: Untagged
@@ -466,6 +467,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &314377002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 314377001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9b996aa1873948de9b0de502aa24428, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touchUICanvas: {fileID: 0}
+  button0: {fileID: 1998828990}
+  button1: {fileID: 1586132139}
+  button2: {fileID: 274817679}
+  button3: {fileID: 430614874}
+  button4: {fileID: 1773802374}
+  button5: {fileID: 210511162}
 --- !u!4 &314377003
 Transform:
   m_ObjectHideFlags: 0
