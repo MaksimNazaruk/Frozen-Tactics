@@ -27,6 +27,18 @@ public class BuildingBehaviour : EntityBehaviour {
 		stats.basicType = EntityStats.BasicType.BasicTypeBuilding;
 	}
 
+	protected override void SetupAvailableActions ()
+	{
+		base.SetupAvailableActions ();
+
+		EntityAction setRallyPointAction = new EntityAction ();
+		setRallyPointAction.title = "Set Rally Point";
+		setRallyPointAction.isTargetRequired = true;
+		setRallyPointAction.actionMethod = new EntityActionMethod (SetRallyPointAction);
+
+		availableActions.Add (setRallyPointAction);
+	}
+
 	void SetupNavMeshObstacle () {
 
 		navMeshObstacle = gameObject.AddComponent<NavMeshObstacle> ();
@@ -40,6 +52,16 @@ public class BuildingBehaviour : EntityBehaviour {
 		defaultRallyPoint.x += stats.size / 2.0f + 1.0f;
 		SetRallyPoint (defaultRallyPoint);
 	}
+
+
+	// ######### Actions #########
+
+	void SetRallyPointAction(ActionTarget target, out bool isFinished) {
+
+		SetRallyPoint (target.Position);
+		isFinished = true;
+	}
+
 
 	protected override void UpdateRealTime () {
 

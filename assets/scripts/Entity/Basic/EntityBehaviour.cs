@@ -97,7 +97,6 @@ public class EntityBehaviour : MonoBehaviour {
 			currentCommand.action.actionMethod (currentCommand.target, out isFinished);
 
 			if (isFinished) {
-				Debug.Log ("Command finished!");
 				commandsToPerform.Remove (currentCommand);
 			}
 		}

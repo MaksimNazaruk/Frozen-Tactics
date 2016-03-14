@@ -25,14 +25,10 @@ public class BaseBuildingBehaviour : BuildingBehaviour {
 	protected override void UpdateRealTime () {
 
 		base.UpdateRealTime ();
-
-		Debug.Log ("UpdateRealTime Base Building");
 	}
 
 	protected override void UpdateFrozenTime () {
 
 		base.UpdateFrozenTime ();
-
-		Debug.Log ("UpdateFrozenTime Base Building");
 	}
 }
