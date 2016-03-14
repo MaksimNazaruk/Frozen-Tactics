@@ -77,6 +77,8 @@ public class TouchUIBehaviour : UIBehaviour {
 
 		// clean all the buttons
 		foreach (Button aButton in allButtons) {
+			aButton.enabled = false;
+			aButton.gameObject.SetActive (false);
 			aButton.GetComponentInChildren<Text> ().text = "---";
 			aButton.onClick.RemoveAllListeners();
 		}
@@ -94,6 +96,8 @@ public class TouchUIBehaviour : UIBehaviour {
 			for (int i = 0; i < actionsCount; i++) {
 				EntityAction action = availableActions [i];
 				Button button = allButtons [i];
+				button.enabled = true;
+				button.gameObject.SetActive (true);
 				button.GetComponentInChildren<Text> ().text = action.title;
 				button.onClick.AddListener (() => AddAction (action, null));
 			}
