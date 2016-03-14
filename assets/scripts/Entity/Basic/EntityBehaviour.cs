@@ -38,7 +38,7 @@ public class EntityBehaviour : MonoBehaviour {
 
 	protected virtual void SetupAvailableActions () {
 
-		Debug.LogError ("SetupActions() method should be implemented in derived classes");
+		availableActions = new List<EntityAction> ();
 	}
 
 	protected virtual void SetupCommands () {
@@ -89,6 +89,18 @@ public class EntityBehaviour : MonoBehaviour {
 	/// Update callback that is called only when GameManager is set to realtime mode
 	/// </summary>
 	protected virtual void UpdateRealTime () {
+
+		if (commandsToPerform.Count > 0) {
+
+			EntityCommand currentCommand = commandsToPerform [0];
+			bool isFinished;
+			currentCommand.action.actionMethod (currentCommand.target, out isFinished);
+
+			if (isFinished) {
+				Debug.Log ("Command finished!");
+				commandsToPerform.Remove (currentCommand);
+			}
+		}
 
 	}
 

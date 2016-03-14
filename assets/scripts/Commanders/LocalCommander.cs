@@ -11,7 +11,10 @@ public class LocalCommander : Commander {
 			return;
 		}
 
-		selectedEntity.IsSelected = false;
+		if (selectedEntity != null) {
+			selectedEntity.IsSelected = false;
+		}
+
 		selectedEntity = entity;
 		if (selectedEntity != null) {
 			selectedEntity.IsSelected = true;

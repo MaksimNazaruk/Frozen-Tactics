@@ -31,6 +31,7 @@ public class BuildingBehaviour : EntityBehaviour {
 
 		navMeshObstacle = gameObject.AddComponent<NavMeshObstacle> ();
 		navMeshObstacle.carving = true;
+		navMeshObstacle.size = new Vector3 (1.5f, 1.0f, 1.5f);
 	}
 
 	void SetupDefaultRallyPoint () {

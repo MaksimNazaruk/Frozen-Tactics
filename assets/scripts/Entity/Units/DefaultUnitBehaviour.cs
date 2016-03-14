@@ -23,17 +23,18 @@ public class DefaultUnitBehaviour : UnitBehaviour {
 		stats.visionRange = 10.0f;
 	}
 
+	protected override void SetupAvailableActions () {
+
+		base.SetupAvailableActions ();
+	}
+
 	protected override void UpdateRealTime () {
 
 		base.UpdateRealTime ();
-
-		Debug.Log ("UpdateRealTime Default Unit");
 	}
 
 	protected override void UpdateFrozenTime () {
 
 		base.UpdateFrozenTime ();
-
-		Debug.Log ("UpdateFrozenTime Default Unit");
 	}
 }

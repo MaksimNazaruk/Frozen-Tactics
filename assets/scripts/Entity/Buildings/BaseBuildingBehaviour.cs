@@ -17,7 +17,7 @@ public class BaseBuildingBehaviour : BuildingBehaviour {
 		stats.buildTime = 20.0f;
 		stats.fullHealth = 2000.0f;
 		stats.currentHealth = stats.fullHealth;
-		stats.size = 1.0f;
+		stats.size = 5.0f;
 		stats.attackRange = 0.0f;
 		stats.visionRange = 10.0f;
 	}

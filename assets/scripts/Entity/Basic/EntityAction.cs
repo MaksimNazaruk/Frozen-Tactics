@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public delegate void EntityActionMethod (ActionTarget target);
+public delegate void EntityActionMethod (ActionTarget target, out bool isFinished);
 
 public class EntityAction {
 

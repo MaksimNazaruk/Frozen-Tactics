@@ -31,13 +31,15 @@ public class UnitBehaviour : EntityBehaviour {
 	/// </summary>
 	protected override void SetupAvailableActions () {
 
-		availableActions = new List<EntityAction> ();
+		base.SetupAvailableActions ();
 
 		// basic Move action
 		EntityAction moveAction = new EntityAction ();
 		moveAction.title = "Move";
 		moveAction.isTargetRequired = true;
 		moveAction.actionMethod = new EntityActionMethod (MoveToTarget);
+
+		availableActions.Add (moveAction);
 	}
 
 	void SetupNavMeshAgent () {
@@ -60,9 +62,25 @@ public class UnitBehaviour : EntityBehaviour {
 
 	// ########## Action Methods ###########
 
-	void MoveToTarget(ActionTarget target) {
+	void MoveToTarget(ActionTarget target, out bool isFinished) {
 
-		navMeshAgent.SetDestination (target.Position);
+		float distance = Vector3.Distance (gameObject.transform.position, target.Position);
+		if (distance > StopDistance ()) {
+			
+			isFinished = false;
+			if (navMeshAgent.destination != target.Position) {
+				navMeshAgent.SetDestination (target.Position);
+			}
+
+		} else {
+
+			isFinished = true;
+		}
+	}
+
+	float StopDistance () {
+
+		return stats.size / 2.0f + 0.5f;
 	}
 
 	// ########## Update methods ###########

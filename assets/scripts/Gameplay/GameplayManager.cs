@@ -18,6 +18,7 @@ public class GameplayManager {
 
 	GameplayManager () {
 
+		commanders = new List <Commander> ();
 		isRealtime = true;
 	}	
 
@@ -42,8 +43,8 @@ public class GameplayManager {
 	}
 
 	protected int currentLocalCommanderId;
-	public Commander CurrentLocalCommander () {
-		return CommanderForId (currentLocalCommanderId);
+	public LocalCommander CurrentLocalCommander () {
+		return CommanderForId (currentLocalCommanderId) as LocalCommander;
 	}
 
 	public void AddCommanderWithType(CommanderType commanderType) {
