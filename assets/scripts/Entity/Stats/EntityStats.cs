@@ -18,8 +18,6 @@ public class EntityStats {
 
 	public float size;
 
-	public float buildTime;
-
 	public float visionRange;
 	public float attackRange;
 

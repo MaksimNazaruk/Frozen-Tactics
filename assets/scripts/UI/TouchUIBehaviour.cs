@@ -40,11 +40,8 @@ public class TouchUIBehaviour : UIBehaviour {
 		// GUI update
 		if (activeCommander != null) {
 
-			if (activeCommander.selectedEntity != null && activeCommander.selectedEntity != selectedEntity) {
-
-				selectedEntity = activeCommander.selectedEntity;
-				UpdateUIForSelectedEntity ();
-			}
+			selectedEntity = activeCommander.selectedEntity;
+			UpdateUIForSelectedEntity ();
 
 			if (!IsPointerOverUI () && Input.GetMouseButtonDown (0)) {
 				

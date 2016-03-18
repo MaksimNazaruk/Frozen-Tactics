@@ -15,8 +15,8 @@ public class EntityBehaviour : MonoBehaviour {
 			return isSelected;
 		}
 		set {
-			MeshRenderer selectionRenderer = selectionObject.GetComponent<MeshRenderer> ();
-			selectionRenderer.enabled = value;
+			isSelected = value;
+			UpdateEntityUI ();
 		}
 	}
 	GameObject selectionObject;
@@ -45,17 +45,28 @@ public class EntityBehaviour : MonoBehaviour {
 
 		commandsToPerform = new List<EntityCommand> ();
 	}
-		
-	// setups selection ring, maybe healthbars, path line, etc
-	void SetupEntityUI () {
 
-		selectionObject = Instantiate (Resources.Load("Prefabs\\UnitCursor")) as GameObject;
+	/// <summary>
+	/// Setups in-world UI - a selection ring, maybe healthbars, path line, etc
+	/// </summary>
+	protected virtual void SetupEntityUI () {
+
+		selectionObject = Instantiate (Resources.Load("Prefabs\\EntityUI\\UnitCursor")) as GameObject;
 		selectionObject.transform.SetParent (gameObject.transform, false);
 		selectionObject.transform.localPosition = new Vector3 (0, 0, 0);
 		selectionObject.transform.localRotation = Quaternion.Euler (0, 0, 0);
 
 		MeshRenderer selectionRenderer = selectionObject.GetComponent<MeshRenderer> ();
 		selectionRenderer.enabled = false;
+	}
+
+	/// <summary>
+	/// Updates the entity's in-world UI. Typically is used to show\hide in-world UI elements
+	/// </summary>
+	protected virtual void UpdateEntityUI () {
+
+		MeshRenderer selectionRenderer = selectionObject.GetComponent<MeshRenderer> ();
+		selectionRenderer.enabled = IsSelected;
 	}
 
 	/// <summary>
