@@ -4,9 +4,9 @@ using System.Collections;
 public class DefaultUnitBehaviour : UnitBehaviour {
 
 	// Use this for initialization
-	protected override void Start () {
+	protected override void Awake () {
 	
-		base.Start ();
+		base.Awake ();
 	}
 
 	protected override void SetupStats () {

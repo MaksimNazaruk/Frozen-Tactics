@@ -10,6 +10,7 @@ public class BuildingBehaviour : EntityBehaviour {
 	// Unit Building properties
 	float buildingTimerCurrentValue = 0.0f;
 	EntityBlueprint currentBlueprint;
+	protected bool isUnitBuildingFinished;
 
 	// Rally point properties
 	Vector3 rallyPoint;
@@ -20,9 +21,9 @@ public class BuildingBehaviour : EntityBehaviour {
 	GameObject rallyPointMarkerObject;
 
 	// Use this for initialization
-	protected override void Start () {
+	protected override void Awake () {
 
-		base.Start ();
+		base.Awake ();
 
 		SetupNavMeshObstacle ();
 		SetupDefaultRallyPoint ();
@@ -81,7 +82,7 @@ public class BuildingBehaviour : EntityBehaviour {
 	void SetupDefaultRallyPoint () {
 
 		Vector3 defaultRallyPoint = gameObject.transform.position;
-		defaultRallyPoint.x += stats.size / 2.0f + 2.0f;
+		defaultRallyPoint.x += stats.size / 2.0f + 15.0f;
 		SetRallyPoint (defaultRallyPoint);
 	}
 
@@ -98,18 +99,31 @@ public class BuildingBehaviour : EntityBehaviour {
 
 	protected void StartBuildingUnit (EntityBlueprint blueprint) {
 
+		isUnitBuildingFinished = false;
 		currentBlueprint = blueprint;
 		buildingTimerCurrentValue = currentBlueprint.buildTime;
 	}
 
 	protected void FinishBuildingUnit () {
 
-		
 		GameObject unitObject = Instantiate (Resources.Load(currentBlueprint.prefabName)) as GameObject;
 		Vector3 unitPosition = gameObject.transform.position;
 		unitPosition.x += stats.size / 2.0f + 2.0f;
 		unitObject.transform.position = unitPosition;
+		UnitBehaviour unitBehaviour = unitObject.GetComponent<UnitBehaviour> ();
+
+		// send new unit to the rally point
+		if (unitBehaviour != null) {
+
+			EntityAction moveAction = unitBehaviour.GetMoveAction ();
+			ActionTarget moveTarget = new ActionTarget ();
+			moveTarget.Position = rallyPoint;
+			unitBehaviour.AddCommandWithActionAndTarget (moveAction, moveTarget);
+		}
+
+		// finishing
 		currentBlueprint = null;
+		isUnitBuildingFinished = true;
 	}
 
 	public bool IsBuildingUnit () {

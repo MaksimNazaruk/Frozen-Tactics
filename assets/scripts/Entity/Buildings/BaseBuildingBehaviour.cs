@@ -2,11 +2,11 @@
 using System.Collections;
 
 public class BaseBuildingBehaviour : BuildingBehaviour {
-	
-	// Use this for initialization
-	protected override void Start () {
 
-		base.Start ();
+	// Use this for initialization
+	protected override void Awake () {
+
+		base.Awake ();
 	}
 
 	protected override void SetupStats () {
@@ -37,10 +37,14 @@ public class BaseBuildingBehaviour : BuildingBehaviour {
 
 	void BuildDefaultUnit (ActionTarget target, out bool isFinished) {
 
-		if (!IsBuildingUnit ()) {
+		if (!IsBuildingUnit () && !isUnitBuildingFinished) {
 			StartBuildingUnit (EntityLibrary.DefaultUnit ());
 		}
-		isFinished = false;
+		isFinished = isUnitBuildingFinished;
+
+		if (isUnitBuildingFinished) {
+			isUnitBuildingFinished = false;
+		}
 	}
 
 

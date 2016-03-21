@@ -10,9 +10,9 @@ public class UnitBehaviour : EntityBehaviour {
 	NavMeshAgent navMeshAgent;
 
 	// Use this for initialization
-	protected override void Start () {
+	protected override void Awake () {
 		
-		base.Start ();
+		base.Awake ();
 
 		SetupNavMeshAgent ();
 	}
@@ -58,6 +58,14 @@ public class UnitBehaviour : EntityBehaviour {
 
 		navMeshAgent.speed = stats.speed;
 		navMeshAgent.radius = stats.size / 2.0f;
+	}
+
+	// ########## Action getter methods ##########
+
+	public EntityAction GetMoveAction () {
+
+		EntityAction moveAction = GetActionWithTitle ("Move");
+		return moveAction;
 	}
 
 	// ########## Action Methods ###########

@@ -21,7 +21,7 @@ public class EntityBehaviour : MonoBehaviour {
 	}
 	GameObject selectionObject;
 
-	protected virtual void Start () {
+	protected virtual void Awake () {
 
 		gameObject.layer = LayerMask.NameToLayer ("Entities");
 
@@ -69,6 +69,28 @@ public class EntityBehaviour : MonoBehaviour {
 		selectionRenderer.enabled = IsSelected;
 	}
 
+	// TODO: consider using action types instead to avoid using string comparisons
+	/// <summary>
+	/// Gets the action with title.
+	/// </summary>
+	/// <returns>Action with input title.</returns>
+	/// <param name="actionTitle">Action title.</param>
+	public EntityAction GetActionWithTitle(string actionTitle) {
+
+		EntityAction foundAction = null;
+
+		foreach (EntityAction action in availableActions) {
+
+			if (action.title == actionTitle) {
+
+				foundAction = action;
+				break;
+			}
+		}
+
+		return foundAction;
+	}
+
 	/// <summary>
 	/// Adds the command with provided action.
 	/// </summary>
@@ -103,6 +125,10 @@ public class EntityBehaviour : MonoBehaviour {
 
 		if (commandsToPerform.Count > 0) {
 
+			// ##### debug ####
+			Renderer entityRenderer = gameObject.GetComponent<Renderer> ();
+			entityRenderer.material.color = Color.red;
+
 			EntityCommand currentCommand = commandsToPerform [0];
 			bool isFinished;
 			currentCommand.action.actionMethod (currentCommand.target, out isFinished);
@@ -110,6 +136,11 @@ public class EntityBehaviour : MonoBehaviour {
 			if (isFinished) {
 				commandsToPerform.Remove (currentCommand);
 			}
+		} else {
+
+			// ##### debug ####
+			Renderer entityRenderer = gameObject.GetComponent<Renderer> ();
+			entityRenderer.material.color = Color.green;
 		}
 
 	}
