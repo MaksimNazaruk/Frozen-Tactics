@@ -8,6 +8,7 @@ public class UnitBehaviour : EntityBehaviour {
 
 	// navigation
 	NavMeshAgent navMeshAgent;
+	NavMeshObstacle navMeshObstacle;
 
 	// Use this for initialization
 	protected override void Awake () {
@@ -46,12 +47,17 @@ public class UnitBehaviour : EntityBehaviour {
 
 		// TODO: remove NavMeshAgent in case we have one???
 
-		navMeshAgent = gameObject.AddComponent <NavMeshAgent>();
+		navMeshAgent = gameObject.AddComponent <NavMeshAgent> ();
 		navMeshAgent.acceleration = 100.0f;
 		navMeshAgent.speed = stats.speed;
 		navMeshAgent.angularSpeed = 1000.0f; // high speed for instant turns
 		navMeshAgent.radius = stats.size / 2.0f;
-		navMeshAgent.Stop ();
+		navMeshAgent.enabled = false;
+
+		navMeshObstacle = gameObject.AddComponent<NavMeshObstacle> ();
+		navMeshObstacle.carving = true;
+		navMeshObstacle.size = new Vector3 (1.5f, 1.0f, 1.5f);
+		navMeshObstacle.enabled = true;
 	}
 
 	protected void UpdateNavMeshAgentParameters () {
@@ -73,8 +79,18 @@ public class UnitBehaviour : EntityBehaviour {
 	void MoveToTarget(ActionTarget target, out bool isFinished) {
 
 		float distance = Vector3.Distance (gameObject.transform.position, target.Position);
-		if (distance > StopDistance ()) {
-			
+		bool isTargetReachable = true;
+
+		if (navMeshAgent.enabled && !navMeshAgent.pathPending) {
+
+			isTargetReachable = (navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete) && navMeshAgent.hasPath;
+		}
+
+		if (distance > StopDistance () && isTargetReachable) {
+
+			navMeshObstacle.enabled = false;
+			navMeshAgent.enabled = true;
+
 			isFinished = false;
 			if (navMeshAgent.destination != target.Position) {
 				navMeshAgent.SetDestination (target.Position);
@@ -82,6 +98,8 @@ public class UnitBehaviour : EntityBehaviour {
 
 		} else {
 
+			navMeshAgent.enabled = false;
+			navMeshObstacle.enabled = true;
 			isFinished = true;
 		}
 	}
@@ -97,13 +115,13 @@ public class UnitBehaviour : EntityBehaviour {
 
 		base.UpdateRealTime ();
 
-		navMeshAgent.Resume ();
+//		navMeshAgent.Resume ();
 	}
 
 	protected override void UpdateFrozenTime () {
 
 		base.UpdateFrozenTime ();
 
-		navMeshAgent.Stop ();
+//		navMeshAgent.Stop ();
 	}
 }

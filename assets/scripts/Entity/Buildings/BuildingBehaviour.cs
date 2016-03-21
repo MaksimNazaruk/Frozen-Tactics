@@ -79,6 +79,7 @@ public class BuildingBehaviour : EntityBehaviour {
 		navMeshObstacle.size = new Vector3 (1.5f, 1.0f, 1.5f);
 	}
 
+	// TODO: update default rally point y position. looks like it's not reachable for the units
 	void SetupDefaultRallyPoint () {
 
 		Vector3 defaultRallyPoint = gameObject.transform.position;
