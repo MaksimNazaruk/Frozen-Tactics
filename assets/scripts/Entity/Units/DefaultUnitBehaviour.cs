@@ -17,9 +17,10 @@ public class DefaultUnitBehaviour : UnitBehaviour {
 		stats.fullHealth = 100.0f;
 		stats.currentHealth = stats.fullHealth;
 		stats.size = 1.0f;
-		stats.speed = 10.0f;
 		stats.attackRange = 7.0f;
 		stats.visionRange = 10.0f;
+
+		unitStats.speed = 10.0f;
 	}
 
 	protected override void SetupAvailableActions () {

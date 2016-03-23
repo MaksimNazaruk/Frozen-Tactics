@@ -16,10 +16,13 @@ public class GameplayManager {
 
 	public bool isRealtime;
 
+	Dictionary<Commander, int> lastEntityIdForCommanders;
+
 	GameplayManager () {
 
 		commanders = new List <Commander> ();
 		isRealtime = true;
+		lastEntityIdForCommanders = new Dictionary<Commander, int>();
 	}	
 
 	// ###### Commanders ########
@@ -59,7 +62,7 @@ public class GameplayManager {
 			commander = new LocalCommander (); // TODO: make RemoteCommander
 			break;
 		case CommanderType.CPUCommanderType:
-			commander = new LocalCommander (); // TODO: make CPUCommander
+			commander = new CPUCommander ();
 			break;
 		default:
 			break;
@@ -77,9 +80,24 @@ public class GameplayManager {
 		}
 	}
 
-	// ####### Entity ID logic #########
+	/// <summary>
+	/// Returns a color for commander with provided identifier. Currently hardcoded, consider chosing colors in the menu
+	/// </summary>
+	/// <returns>Color for commander with identifier.</returns>
+	/// <param name="commanderId">Commander identifier.</param>
+	public Color ColorForCommanderWithId(int commanderId) {
 
-	Dictionary<Commander, int> lastEntityIdForCommanders = new Dictionary<Commander, int>();
+		Color[] availableColors = new Color[] { Color.blue, Color.red, Color.yellow, Color.green };
+
+		Color commanderColor = Color.black;
+		if (commanderId >= 0 && commanderId < availableColors.Length) {
+			commanderColor = availableColors [commanderId];
+		}
+
+		return commanderColor;
+	}
+
+	// ####### Entity ID logic #########
 
 	public int NextEntityIdForCommanderId(int commanderId) {
 
@@ -89,8 +107,14 @@ public class GameplayManager {
 
 		if (commander != null) {
 
-			int lastId = lastEntityIdForCommanders [commander];
-			nextId = lastId + commanders.Count;
+			int lastId = -1;
+			if (lastEntityIdForCommanders.ContainsKey (commander)) {
+				lastId = lastEntityIdForCommanders [commander];
+				nextId = lastId + commanders.Count;
+			} else {
+				nextId = commander.commanderId + commanders.Count;
+			}
+
 			lastEntityIdForCommanders [commander] = nextId;
 		}
 

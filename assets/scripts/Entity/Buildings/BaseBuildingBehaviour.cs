@@ -37,17 +37,11 @@ public class BaseBuildingBehaviour : BuildingBehaviour {
 
 	void BuildDefaultUnit (ActionTarget target, out bool isFinished) {
 
-		if (!IsBuildingUnit () && !isUnitBuildingFinished) {
-			StartBuildingUnit (EntityLibrary.DefaultUnit ());
-		}
-		isFinished = isUnitBuildingFinished;
-
-		if (isUnitBuildingFinished) {
-			isUnitBuildingFinished = false;
-		}
+		BuildUnit (EntityLibrary.DefaultUnit (), out isFinished);
 	}
 
-
+	// ########### Updates ############
+		
 	protected override void UpdateRealTime () {
 
 		base.UpdateRealTime ();

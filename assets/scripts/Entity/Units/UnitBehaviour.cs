@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class UnitBehaviour : EntityBehaviour {
 
-	public new UnitStats stats;
+	public UnitStats unitStats;
 
 	// navigation
 	NavMeshAgent navMeshAgent;
@@ -23,8 +23,11 @@ public class UnitBehaviour : EntityBehaviour {
 	/// </summary>
 	protected override void SetupStats () {
 
-		stats = new UnitStats ();
+		base.SetupStats ();
 		stats.basicType = EntityStats.BasicType.BasicTypeUnit;
+
+		// unit specific stats
+		unitStats = new UnitStats ();
 	}
 
 	/// <summary>
@@ -48,8 +51,8 @@ public class UnitBehaviour : EntityBehaviour {
 		// TODO: remove NavMeshAgent in case we have one???
 
 		navMeshAgent = gameObject.AddComponent <NavMeshAgent> ();
-		navMeshAgent.acceleration = 100.0f;
-		navMeshAgent.speed = stats.speed;
+		navMeshAgent.acceleration = 100.0f;                                                                                                                                                                           
+		navMeshAgent.speed = unitStats.speed;
 		navMeshAgent.angularSpeed = 1000.0f; // high speed for instant turns
 		navMeshAgent.radius = stats.size / 2.0f;
 		navMeshAgent.enabled = false;
@@ -62,7 +65,7 @@ public class UnitBehaviour : EntityBehaviour {
 
 	protected void UpdateNavMeshAgentParameters () {
 
-		navMeshAgent.speed = stats.speed;
+		navMeshAgent.speed = unitStats.speed;
 		navMeshAgent.radius = stats.size / 2.0f;
 	}
 

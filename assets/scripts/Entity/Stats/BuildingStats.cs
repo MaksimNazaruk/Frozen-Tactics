@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-public class BuildingStats : EntityStats {
+public class BuildingStats {
 
 }
 

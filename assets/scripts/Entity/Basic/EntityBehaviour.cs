@@ -4,6 +4,11 @@ using System.Collections.Generic;
 
 public class EntityBehaviour : MonoBehaviour {
 
+
+	// temp(?) property
+	public int commanderId = -1;
+	public GameObject teamFlagObject;
+
 	public EntityStats stats;
 
 	public List<EntityAction> availableActions;
@@ -31,9 +36,19 @@ public class EntityBehaviour : MonoBehaviour {
 		SetupEntityUI ();
 	}
 
+	protected virtual void Start () {
+
+		SetupEntityUI ();
+	}
+
 	protected virtual void SetupStats () {
 
-		Debug.LogError ("SetupStats() method should be implemented in derived classes");
+		stats = new EntityStats ();
+
+		if (commanderId != -1) {
+			stats.commanderId = commanderId;
+			stats.id = GameplayManager.SharedInstance ().NextEntityIdForCommanderId (stats.commanderId);
+		}
 	}
 
 	protected virtual void SetupAvailableActions () {
@@ -53,11 +68,16 @@ public class EntityBehaviour : MonoBehaviour {
 
 		selectionObject = Instantiate (Resources.Load("Prefabs\\EntityUI\\UnitCursor")) as GameObject;
 		selectionObject.transform.SetParent (gameObject.transform, false);
-		selectionObject.transform.localPosition = new Vector3 (0, 0, 0);
-		selectionObject.transform.localRotation = Quaternion.Euler (0, 0, 0);
+		selectionObject.transform.localPosition = new Vector3 (0, 0.1f, 0);
 
 		MeshRenderer selectionRenderer = selectionObject.GetComponent<MeshRenderer> ();
 		selectionRenderer.enabled = false;
+
+		// team color
+		if (teamFlagObject != null && stats != null) {
+
+			teamFlagObject.GetComponent<Renderer> ().material.color = GameplayManager.SharedInstance ().ColorForCommanderWithId (stats.commanderId);
+		}
 	}
 
 	/// <summary>
@@ -125,9 +145,9 @@ public class EntityBehaviour : MonoBehaviour {
 
 		if (commandsToPerform.Count > 0) {
 
-			// ##### debug ####
-			Renderer entityRenderer = gameObject.GetComponent<Renderer> ();
-			entityRenderer.material.color = Color.red;
+//			// ##### debug ####
+//			Renderer entityRenderer = gameObject.GetComponent<Renderer> ();
+//			entityRenderer.material.color = Color.red;
 
 			EntityCommand currentCommand = commandsToPerform [0];
 			bool isFinished;
@@ -138,9 +158,9 @@ public class EntityBehaviour : MonoBehaviour {
 			}
 		} else {
 
-			// ##### debug ####
-			Renderer entityRenderer = gameObject.GetComponent<Renderer> ();
-			entityRenderer.material.color = Color.green;
+//			// ##### debug ####
+//			Renderer entityRenderer = gameObject.GetComponent<Renderer> ();
+//			entityRenderer.material.color = Color.green;
 		}
 
 	}

@@ -3,14 +3,14 @@ using System.Collections;
 
 public class BuildingBehaviour : EntityBehaviour {
 
-	public new BuildingStats stats;
+	public BuildingStats buildingStats;
 
 	NavMeshObstacle navMeshObstacle;
 
 	// Unit Building properties
 	float buildingTimerCurrentValue = 0.0f;
 	EntityBlueprint currentBlueprint;
-	protected bool isUnitBuildingFinished;
+	bool isUnitBuildingFinished;
 
 	// Rally point properties
 	Vector3 rallyPoint;
@@ -30,9 +30,12 @@ public class BuildingBehaviour : EntityBehaviour {
 	}
 
 	protected override void SetupStats () {
-
-		stats = new BuildingStats ();
+		
+		base.SetupStats ();
 		stats.basicType = EntityStats.BasicType.BasicTypeBuilding;
+
+		// building specific stats
+		buildingStats = new BuildingStats ();
 	}
 
 	protected override void SetupAvailableActions ()
@@ -83,7 +86,8 @@ public class BuildingBehaviour : EntityBehaviour {
 	void SetupDefaultRallyPoint () {
 
 		Vector3 defaultRallyPoint = gameObject.transform.position;
-		defaultRallyPoint.x += stats.size / 2.0f + 15.0f;
+		defaultRallyPoint.z += -(stats.size / 2.0f + 10.0f);
+		defaultRallyPoint.y = 0.0f;
 		SetRallyPoint (defaultRallyPoint);
 	}
 
@@ -96,7 +100,21 @@ public class BuildingBehaviour : EntityBehaviour {
 		isFinished = true;
 	}
 
+
 	// ########## Unit building common logic ###########
+	#region Unit production logic
+
+	protected void BuildUnit (EntityBlueprint unitBlueprint, out bool isFinished) {
+
+		if (!IsBuildingUnit () && !isUnitBuildingFinished) {
+			StartBuildingUnit (unitBlueprint);
+		}
+		isFinished = isUnitBuildingFinished;
+
+		if (isUnitBuildingFinished) {
+			isUnitBuildingFinished = false;
+		}
+	}
 
 	protected void StartBuildingUnit (EntityBlueprint blueprint) {
 
@@ -108,13 +126,16 @@ public class BuildingBehaviour : EntityBehaviour {
 	protected void FinishBuildingUnit () {
 
 		GameObject unitObject = Instantiate (Resources.Load(currentBlueprint.prefabName)) as GameObject;
-		Vector3 unitPosition = gameObject.transform.position;
-		unitPosition.x += stats.size / 2.0f + 2.0f;
+		Vector3 unitPosition = rallyPoint - gameObject.transform.position;
+		unitPosition = unitPosition.normalized * (stats.size / 2.0f);
 		unitObject.transform.position = unitPosition;
 		UnitBehaviour unitBehaviour = unitObject.GetComponent<UnitBehaviour> ();
 
-		// send new unit to the rally point
+		// setup and send new unit to the rally point
 		if (unitBehaviour != null) {
+
+			unitBehaviour.stats.commanderId = stats.commanderId;
+			unitBehaviour.stats.id = GameplayManager.SharedInstance ().NextEntityIdForCommanderId (stats.commanderId);
 
 			EntityAction moveAction = unitBehaviour.GetMoveAction ();
 			ActionTarget moveTarget = new ActionTarget ();
@@ -136,7 +157,11 @@ public class BuildingBehaviour : EntityBehaviour {
 		}
 	}
 
+	#endregion
+
+
 	// ########## Updates ########
+	#region Updates
 
 	protected override void UpdateRealTime () {
 
@@ -161,5 +186,7 @@ public class BuildingBehaviour : EntityBehaviour {
 
 		base.UpdateFrozenTime ();
 	}
+
+	#endregion
 
 }

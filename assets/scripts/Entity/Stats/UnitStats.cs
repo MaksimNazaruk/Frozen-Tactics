@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-public class UnitStats : EntityStats {
+public class UnitStats {
 
 	public enum UnitBehaviourStyle	{ Safe, Normal, Aggressive };
 	public UnitBehaviourStyle behaviourStyle;

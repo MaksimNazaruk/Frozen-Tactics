@@ -7,7 +7,7 @@ public class GameplayManagerBehaviour : MonoBehaviour {
 	UIBehaviour uiBehaviour;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 	
 		uiBehaviour = uiManagerObject.GetComponent<UIBehaviour> ();
 		SetupCommanders ();

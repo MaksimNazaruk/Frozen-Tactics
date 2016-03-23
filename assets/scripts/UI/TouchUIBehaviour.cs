@@ -23,6 +23,13 @@ public class TouchUIBehaviour : UIBehaviour {
 	public Button button4;
 	public Button button5;
 
+	// info labels
+	public Text commanderInfoText;
+	public Text idInfoText;
+	public Text classInfoText;
+	public Text currentCommandInfoText;
+	public Text hpInfoText;
+
 	Button[] allButtons;
 
 	// Use this for initialization
@@ -72,6 +79,12 @@ public class TouchUIBehaviour : UIBehaviour {
 
 	void UpdateUIForSelectedEntity () {
 
+		UpdateSelectedEntityCommands ();
+		UpdateSelectedEntityInfo ();
+	}
+
+	void UpdateSelectedEntityCommands () {
+
 		// clean all the buttons
 		foreach (Button aButton in allButtons) {
 			aButton.enabled = false;
@@ -81,23 +94,58 @@ public class TouchUIBehaviour : UIBehaviour {
 		}
 
 		if (selectedEntity != null) {
-			List<EntityAction> availableActions = selectedEntity.availableActions;
 
-			// to be safe if we have more actions then buttons
-			// TODO: dynamic GUI!!!
-			int actionsCount = availableActions.Count;
-			if (availableActions.Count > allButtons.Length) {
-				actionsCount = allButtons.Length;
-			}
+			if (selectedEntity.stats.commanderId == activeCommander.commanderId) {
 
-			for (int i = 0; i < actionsCount; i++) {
-				EntityAction action = availableActions [i];
-				Button button = allButtons [i];
-				button.enabled = true;
-				button.gameObject.SetActive (true);
-				button.GetComponentInChildren<Text> ().text = action.title;
-				button.onClick.AddListener (() => AddAction (action, null));
+				List<EntityAction> availableActions = selectedEntity.availableActions;
+
+				// to be safe if we have more actions then buttons
+				// TODO: dynamic GUI!!!
+				int actionsCount = availableActions.Count;
+				if (availableActions.Count > allButtons.Length) {
+					actionsCount = allButtons.Length;
+				}
+
+				for (int i = 0; i < actionsCount; i++) {
+					EntityAction action = availableActions [i];
+					Button button = allButtons [i];
+					button.enabled = true;
+					button.gameObject.SetActive (true);
+					button.GetComponentInChildren<Text> ().text = action.title;
+					button.onClick.AddListener (() => AddAction (action, null));
+				}
 			}
+		}
+	}
+
+	void UpdateSelectedEntityInfo () {
+
+		if (selectedEntity != null) {
+
+			commanderInfoText.text = "Commander: " + selectedEntity.stats.commanderId.ToString ();
+			idInfoText.text = "ID: " + selectedEntity.stats.id.ToString();
+			classInfoText.text = "Class: " + selectedEntity.stats.title.ToString ();
+			hpInfoText.text = "HP: " + selectedEntity.stats.currentHealth.ToString () + "/" + selectedEntity.stats.fullHealth.ToString ();
+
+			if (selectedEntity.stats.commanderId == activeCommander.commanderId) {
+				if (selectedEntity.commandsToPerform.Count > 0) {
+					currentCommandInfoText.text = "Commands:\n";
+					foreach (EntityCommand command in selectedEntity.commandsToPerform) {
+						currentCommandInfoText.text += command.action.title.ToString() + "\n";
+					}
+				} else {
+					currentCommandInfoText.text = "Commands: -";
+				}
+			} else {
+				currentCommandInfoText.text = "Commands: N/A";
+			}
+		} else {
+
+			commanderInfoText.text = "Commander: -";
+			idInfoText.text = "ID: -";
+			classInfoText.text = "Class: -";
+			hpInfoText.text = "HP: -";
+			currentCommandInfoText.text = "Commands: -";
 		}
 	}
 

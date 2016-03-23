@@ -3,7 +3,7 @@
 public class EntityStats {
 
 	public int id;
-	public int commanderId;
+	public int commanderId = -1;
 
 	public enum BasicType { BasicTypeBuilding, BasicTypeUnit };
 	public BasicType basicType;
