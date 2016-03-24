@@ -13,7 +13,7 @@ public class DefaultUnitBehaviour : UnitBehaviour {
 
 		base.SetupStats ();
 
-		stats.title = "Dafault Unit";
+		stats.title = "Default Unit";
 		stats.fullHealth = 100.0f;
 		stats.currentHealth = stats.fullHealth;
 		stats.size = 1.0f;

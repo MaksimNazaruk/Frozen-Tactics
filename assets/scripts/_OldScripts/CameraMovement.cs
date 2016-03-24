@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class CameraMovement : MonoBehaviour {
 
@@ -15,19 +16,19 @@ public class CameraMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		KeyboardCameraMovement ();
+		JoystickCameraMovement ();
 	}
 
-	void KeyboardCameraMovement () {
+	void JoystickCameraMovement () {
 
-		float verticalInput = Input.GetAxis ("Vertical");
-		float horizontalInput = Input.GetAxis ("Horizontal");
+		float verticalInput = CrossPlatformInputManager.GetAxis ("Vertical");
+		float horizontalInput = CrossPlatformInputManager.GetAxis ("Horizontal");
 
 		Vector3 translationVector = new Vector3 ();
-		translationVector.x -= verticalInput * scrollSpeed * Time.deltaTime;
+		translationVector.x += verticalInput * scrollSpeed * Time.deltaTime;
 		translationVector.z += verticalInput * scrollSpeed * Time.deltaTime;
 		translationVector.x += horizontalInput * scrollSpeed * Time.deltaTime;
-		translationVector.z += horizontalInput * scrollSpeed * Time.deltaTime;
+		translationVector.z -= horizontalInput * scrollSpeed * Time.deltaTime;
 
 		gameObject.transform.Translate (translationVector, Space.World);
 	}
