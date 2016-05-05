@@ -140,7 +140,8 @@ public class EntityBehaviour : MonoBehaviour {
 
 	public virtual void Destroy() {
 
-		commandsToPerform.RemoveAll();
+		commandsToPerform.Clear ();
+		IsSelected = false;
 	}
 
 //	protected virtual void AnimateDestruction() {
