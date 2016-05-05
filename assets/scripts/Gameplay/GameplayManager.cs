@@ -29,6 +29,14 @@ public class GameplayManager {
 
 	protected List<Commander> commanders;
 
+	public void UpdateCommanders() {
+
+		foreach (Commander aCommander in commanders) {
+
+			aCommander.UpdateAliveEntitiesLists ();
+		}
+	}
+
 	public Commander CommanderForId (int commanderId) {
 
 		Commander commander = null;

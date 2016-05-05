@@ -30,6 +30,9 @@ public class EntityBehaviour : MonoBehaviour {
 
 		gameObject.layer = LayerMask.NameToLayer ("Entities");
 
+		// TODO: maybe RegisterEntity() method that calls some Commander's method that adds this entity to the All list?
+		// then the opposite can be done within Destroy()
+
 		SetupStats ();
 		SetupAvailableActions ();
 		SetupCommands ();

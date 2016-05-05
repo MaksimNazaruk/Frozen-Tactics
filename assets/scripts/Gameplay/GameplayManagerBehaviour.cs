@@ -23,5 +23,6 @@ public class GameplayManagerBehaviour : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+		GameplayManager.SharedInstance ().UpdateCommanders ();
 	}
 }
