@@ -126,7 +126,7 @@ public class BuildingBehaviour : EntityBehaviour {
 	protected void FinishBuildingUnit () {
 
 		GameObject unitObject = Instantiate (Resources.Load(currentBlueprint.prefabName)) as GameObject;
-		Vector3 unitPosition = rallyPoint - gameObject.transform.position;
+		Vector3 unitPosition = rallyPoint - gameObject.transform.position; // calculating unit position to be just outside of the building in derection of a rally point
 		unitPosition = unitPosition.normalized * (stats.size / 2.0f);
 		unitObject.transform.position = unitPosition;
 		UnitBehaviour unitBehaviour = unitObject.GetComponent<UnitBehaviour> ();

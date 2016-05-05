@@ -12,6 +12,9 @@ public class Commander {
 	List<UnitBehaviour> allUnits;
 	List<BuildingBehaviour> allBuildings;
 
+	public void UpdateAliveEntitiesLists() {
 
+
+	}
 
 }

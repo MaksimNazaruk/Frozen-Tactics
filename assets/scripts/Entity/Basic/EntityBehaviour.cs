@@ -41,6 +41,8 @@ public class EntityBehaviour : MonoBehaviour {
 		SetupEntityUI ();
 	}
 
+	#region Setup
+
 	protected virtual void SetupStats () {
 
 		stats = new EntityStats ();
@@ -79,6 +81,17 @@ public class EntityBehaviour : MonoBehaviour {
 			teamFlagObject.GetComponent<Renderer> ().material.color = GameplayManager.SharedInstance ().ColorForCommanderWithId (stats.commanderId);
 		}
 	}
+
+	#endregion
+
+	#region Status
+
+	public bool IsAlive() {
+
+		return (stats.currentHealth > 0);
+	}
+
+	#endregion
 
 	/// <summary>
 	/// Updates the entity's in-world UI. Typically is used to show\hide in-world UI elements
@@ -125,6 +138,14 @@ public class EntityBehaviour : MonoBehaviour {
 		commandsToPerform.Add (command);
 	}
 
+	public virtual void Destroy() {
+
+		commandsToPerform.RemoveAll();
+	}
+
+//	protected virtual void AnimateDestruction() {
+//
+//	}
 
 	/// <summary>
 	/// Default Unity3D Update callback
@@ -142,6 +163,11 @@ public class EntityBehaviour : MonoBehaviour {
 	/// Update callback that is called only when GameManager is set to realtime mode
 	/// </summary>
 	protected virtual void UpdateRealTime () {
+
+		if (!IsAlive ()) {
+
+			Destroy ();
+		}
 
 		if (commandsToPerform.Count > 0) {
 
