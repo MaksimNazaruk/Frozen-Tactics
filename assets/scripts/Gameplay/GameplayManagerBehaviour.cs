@@ -15,8 +15,9 @@ public class GameplayManagerBehaviour : MonoBehaviour {
 		
 	void SetupCommanders () {
 
-		// for now it's only one local commander
+		// pre-configured for now
 		GameplayManager.SharedInstance().AddCommanderWithType(CommanderType.LocalCommanderType);
+		GameplayManager.SharedInstance().AddCommanderWithType(CommanderType.CPUCommanderType);
 		uiBehaviour.activeCommander = GameplayManager.SharedInstance ().CurrentLocalCommander ();
 	}
 

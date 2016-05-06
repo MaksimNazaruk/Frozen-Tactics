@@ -82,7 +82,7 @@ public class BuildingBehaviour : EntityBehaviour {
 		navMeshObstacle.size = new Vector3 (1.5f, 1.0f, 1.5f);
 	}
 
-	// TODO: update default rally point y position. looks like it's not reachable for the units
+	// TODO: update default rally point y position. looks like it's not reachable for the units. seems to be OK now o__O
 	void SetupDefaultRallyPoint () {
 
 		Vector3 defaultRallyPoint = gameObject.transform.position;
@@ -124,24 +124,21 @@ public class BuildingBehaviour : EntityBehaviour {
 	}
 
 	protected void FinishBuildingUnit () {
-
-		GameObject unitObject = Instantiate (Resources.Load(currentBlueprint.prefabName)) as GameObject;
-		Vector3 unitPosition = rallyPoint - gameObject.transform.position; // calculating unit position to be just outside of the building in derection of a rally point
+		
+		// calculating unit position to be just outside of the building in derection of a rally point
+		Vector3 unitPosition = rallyPoint - gameObject.transform.position;
 		unitPosition = unitPosition.normalized * (stats.size / 2.0f);
-		unitObject.transform.position = unitPosition;
+
+		// creating unit
+		GameObject unitObject = GameplayManager.SharedInstance ().CreateEntity (currentBlueprint, stats.commanderId, unitPosition);
+
 		UnitBehaviour unitBehaviour = unitObject.GetComponent<UnitBehaviour> ();
 
-		// setup and send new unit to the rally point
-		if (unitBehaviour != null) {
-
-			unitBehaviour.stats.commanderId = stats.commanderId;
-			unitBehaviour.stats.id = GameplayManager.SharedInstance ().NextEntityIdForCommanderId (stats.commanderId);
-
-			EntityAction moveAction = unitBehaviour.GetMoveAction ();
-			ActionTarget moveTarget = new ActionTarget ();
-			moveTarget.Position = rallyPoint;
-			unitBehaviour.AddCommandWithActionAndTarget (moveAction, moveTarget);
-		}
+		// adding move action to the rally point
+		EntityAction moveAction = unitBehaviour.GetMoveAction ();
+		ActionTarget moveTarget = new ActionTarget ();
+		moveTarget.Position = rallyPoint;
+		unitBehaviour.AddCommandWithActionAndTarget (moveAction, moveTarget);
 
 		// finishing
 		currentBlueprint = null;

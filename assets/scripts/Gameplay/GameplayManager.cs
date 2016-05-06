@@ -105,6 +105,8 @@ public class GameplayManager {
 		return commanderColor;
 	}
 
+	#region Creating Entities
+
 	// ####### Entity ID logic #########
 
 	public int NextEntityIdForCommanderId(int commanderId) {
@@ -133,4 +135,26 @@ public class GameplayManager {
 
 		return NextEntityIdForCommanderId (currentLocalCommanderId);
 	}
+
+	public GameObject CreateEntity(EntityBlueprint blueprint,  int commanderId, Vector3 position) {
+
+		// TODO: maybe RegisterEntity() method that calls some Commander's method that adds this entity to the All list?
+		// then the opposite can be done within Destroy()
+
+		GameObject entityObject = Object.Instantiate (Resources.Load(blueprint.prefabName)) as GameObject;
+		entityObject.transform.position = position;
+		EntityBehaviour entityBehaviour = entityObject.GetComponent<EntityBehaviour> ();
+
+		entityBehaviour.stats.commanderId = commanderId;
+		entityBehaviour.stats.id = GameplayManager.SharedInstance ().NextEntityIdForCommanderId (commanderId);
+
+		return entityObject;
+	}
+
+	public void DestroyEntity(EntityBehaviour entityBehaviour) {
+
+
+	}
+
+	#endregion
 }

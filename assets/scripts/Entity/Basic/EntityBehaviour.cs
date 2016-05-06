@@ -6,7 +6,7 @@ public class EntityBehaviour : MonoBehaviour {
 
 
 	// temp(?) property
-	public int commanderId = -1;
+	public int editorCommanderId = -1;
 	public GameObject teamFlagObject;
 
 	public EntityStats stats;
@@ -30,9 +30,6 @@ public class EntityBehaviour : MonoBehaviour {
 
 		gameObject.layer = LayerMask.NameToLayer ("Entities");
 
-		// TODO: maybe RegisterEntity() method that calls some Commander's method that adds this entity to the All list?
-		// then the opposite can be done within Destroy()
-
 		SetupStats ();
 		SetupAvailableActions ();
 		SetupCommands ();
@@ -48,10 +45,11 @@ public class EntityBehaviour : MonoBehaviour {
 
 	protected virtual void SetupStats () {
 
-		stats = new EntityStats ();
+		stats = new EntityStats (); // TODO: consider creating new stats only once. Though currently this code is called only once.
 
-		if (commanderId != -1) {
-			stats.commanderId = commanderId;
+		if (editorCommanderId != -1) { // commanderId was set in the Editor
+			
+			stats.commanderId = editorCommanderId;
 			stats.id = GameplayManager.SharedInstance ().NextEntityIdForCommanderId (stats.commanderId);
 		}
 	}
