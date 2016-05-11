@@ -153,7 +153,8 @@ public class GameplayManager {
 
 	public void DestroyEntity(EntityBehaviour entityBehaviour) {
 
-
+		GameObject entityObject = entityBehaviour.gameObject;
+		Object.Destroy (entityObject);
 	}
 
 	#endregion

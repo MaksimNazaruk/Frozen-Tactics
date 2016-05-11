@@ -62,6 +62,19 @@ public class EntityBehaviour : MonoBehaviour {
 	protected virtual void SetupCommands () {
 
 		commandsToPerform = new List<EntityCommand> ();
+
+		SetupDefaultActions ();
+	}
+		
+	void SetupDefaultActions() {
+
+		// debug demage command
+		EntityAction moveAction = new EntityAction ();
+		moveAction.title = "Auto Damage";
+		moveAction.isTargetRequired = false;
+		moveAction.actionMethod = new EntityActionMethod (AutoDamage);
+
+		availableActions.Add (moveAction);
 	}
 
 	/// <summary>
@@ -81,6 +94,16 @@ public class EntityBehaviour : MonoBehaviour {
 
 			teamFlagObject.GetComponent<Renderer> ().material.color = GameplayManager.SharedInstance ().ColorForCommanderWithId (stats.commanderId);
 		}
+	}
+
+	#endregion
+
+	#region Actions
+
+	void AutoDamage(ActionTarget target, out bool isFinished) {
+
+		stats.currentHealth -= 100;
+		isFinished = true;
 	}
 
 	#endregion
@@ -143,6 +166,8 @@ public class EntityBehaviour : MonoBehaviour {
 
 		commandsToPerform.Clear ();
 		IsSelected = false;
+
+		GameplayManager.SharedInstance ().DestroyEntity (this);
 	}
 
 //	protected virtual void AnimateDestruction() {

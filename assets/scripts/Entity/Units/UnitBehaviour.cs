@@ -18,6 +18,8 @@ public class UnitBehaviour : EntityBehaviour {
 		SetupNavMeshAgent ();
 	}
 
+	#region Life cycle and setup methods
+
 	/// <summary>
 	/// setups basic stats, common for all the units
 	/// </summary>
@@ -69,7 +71,16 @@ public class UnitBehaviour : EntityBehaviour {
 		navMeshAgent.radius = stats.size / 2.0f;
 	}
 
-	// ########## Action getter methods ##########
+	public override void Destroy() {
+
+		// custom logic for destroy
+
+		base.Destroy ();
+	}
+
+	#endregion
+
+	#region Action getter methods
 
 	public EntityAction GetMoveAction () {
 
@@ -77,7 +88,9 @@ public class UnitBehaviour : EntityBehaviour {
 		return moveAction;
 	}
 
-	// ########## Action Methods ###########
+	#endregion
+
+	#region Action Methods
 
 	void MoveToTarget(ActionTarget target, out bool isFinished) {
 
@@ -107,12 +120,18 @@ public class UnitBehaviour : EntityBehaviour {
 		}
 	}
 
+	#endregion
+
+	#region Helper methods
+
 	float StopDistance () {
 
 		return stats.size / 2.0f + 0.5f;
 	}
 
-	// ########## Update methods ###########
+	#endregion
+
+	#region Update methods
 
 	protected override void UpdateRealTime () {
 
@@ -127,4 +146,6 @@ public class UnitBehaviour : EntityBehaviour {
 
 //		navMeshAgent.Stop ();
 	}
+
+	#endregion
 }

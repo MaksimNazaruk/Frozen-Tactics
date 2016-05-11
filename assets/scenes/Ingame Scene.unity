@@ -1740,6 +1740,10 @@ Prefab:
       propertyPath: m_UseLightProbes
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11408136, guid: b451a0e8b82a64d90954cd01e03853d7, type: 2}
+      propertyPath: editorCommanderId
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b451a0e8b82a64d90954cd01e03853d7, type: 2}
   m_IsPrefabParent: 0
@@ -2031,6 +2035,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11408136, guid: b451a0e8b82a64d90954cd01e03853d7, type: 2}
       propertyPath: commanderId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11408136, guid: b451a0e8b82a64d90954cd01e03853d7, type: 2}
+      propertyPath: editorCommanderId
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
