@@ -162,6 +162,9 @@ public class EntityBehaviour : MonoBehaviour {
 		commandsToPerform.Add (command);
 	}
 
+	/// <summary>
+	/// Destroy this entity. This basic implementation should be called the last one, since it actually destroys the game object
+	/// </summary>
 	public virtual void Destroy() {
 
 		commandsToPerform.Clear ();

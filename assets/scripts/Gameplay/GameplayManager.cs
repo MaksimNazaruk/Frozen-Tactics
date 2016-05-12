@@ -25,7 +25,7 @@ public class GameplayManager {
 		lastEntityIdForCommanders = new Dictionary<Commander, int>();
 	}	
 
-	// ###### Commanders ########
+	#region Commanders
 
 	protected List<Commander> commanders;
 
@@ -33,7 +33,7 @@ public class GameplayManager {
 
 		foreach (Commander aCommander in commanders) {
 
-			aCommander.UpdateAliveEntitiesLists ();
+			Debug.Log ("Commander " + aCommander.commanderId.ToString() + " has " + aCommander.EntitiesCount() + " units");
 		}
 	}
 
@@ -105,6 +105,8 @@ public class GameplayManager {
 		return commanderColor;
 	}
 
+	#endregion
+
 	#region Creating Entities
 
 	// ####### Entity ID logic #########
@@ -148,10 +150,14 @@ public class GameplayManager {
 		entityBehaviour.stats.commanderId = commanderId;
 		entityBehaviour.stats.id = GameplayManager.SharedInstance ().NextEntityIdForCommanderId (commanderId);
 
+		CommanderForId (commanderId).RegisterEntity (entityBehaviour);
+
 		return entityObject;
 	}
 
 	public void DestroyEntity(EntityBehaviour entityBehaviour) {
+
+		CommanderForId (entityBehaviour.stats.commanderId).ForgetEntity (entityBehaviour);
 
 		GameObject entityObject = entityBehaviour.gameObject;
 		Object.Destroy (entityObject);

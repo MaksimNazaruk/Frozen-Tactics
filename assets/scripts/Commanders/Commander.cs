@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,44 +10,40 @@ public class Commander {
 	public int commanderId;
 	public CommanderType commanderType;
 
-	List<UnitBehaviour> allUnits;
-	List<BuildingBehaviour> allBuildings;
+	List<WeakReference> entities;
 
 	public Commander() {
 
-		allBuildings = new List<BuildingBehaviour> ();
-		allUnits = new List<UnitBehaviour> ();
+		entities = new List<WeakReference> ();
 	}
 
-	public void UpdateAliveEntitiesLists() {
+	#region Entities management
 
-		// updating buildings
-		foreach (BuildingBehaviour aBuilding in allBuildings) {
+	protected bool IsEntityRegistered(EntityBehaviour entity) {
 
-			if (aBuilding == null) {
+		return entities.Exists (x => x.Target as EntityBehaviour == entity);
+	}
 
-				allBuildings.Remove (aBuilding);
-			} else {
+	public void RegisterEntity(EntityBehaviour entity) {
 
-				if (!aBuilding.IsAlive ()) {
-					allBuildings.Remove (aBuilding);
-				}
-			}
-		}
+		if (!IsEntityRegistered(entity)) {
 
-		// updating units
-		foreach (UnitBehaviour aUnit in allUnits) {
-
-			if (aUnit == null) {
-
-				allUnits.Remove (aUnit);
-			} else {
-
-				if (!aUnit.IsAlive ()) {
-					allUnits.Remove (aUnit);
-				}
-			}
+			entities.Add (new WeakReference (entity));
 		}
 	}
 
+	public void ForgetEntity(EntityBehaviour entity) {
+
+		if (IsEntityRegistered(entity)) {
+
+			entities.RemoveAll (x => x.Target as EntityBehaviour == entity);
+		}
+	}
+
+	public int EntitiesCount() {
+
+		return entities.Count;
+	}
+
+	#endregion
 }
