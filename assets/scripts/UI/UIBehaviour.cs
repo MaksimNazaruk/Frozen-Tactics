@@ -11,6 +11,11 @@ public class UIBehaviour : MonoBehaviour {
 	/// </summary>
 	protected EntityAction activeAction; 
 
+	protected void EndTurn () {
+
+		GameplayManager.SharedInstance ().EndTurn ();
+	}
+
 	// Use this for initialization
 	void Start () {
 	
@@ -18,6 +23,6 @@ public class UIBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 }

@@ -15,6 +15,8 @@ public class TouchUIBehaviour : UIBehaviour {
 
 	// GUI elements
 
+	public Button endTurnButton;
+
 	// TODO: make dynamic GUI
 	public Button button0;
 	public Button button1;
@@ -40,6 +42,13 @@ public class TouchUIBehaviour : UIBehaviour {
 
 		groundMask = LayerMask.GetMask ("Environment");
 		entityMask = LayerMask.GetMask ("Entities");
+
+		SetupStaticUI ();
+	}
+
+	protected void SetupStaticUI () {
+
+		endTurnButton.onClick.AddListener (() => EndTurn ());
 	}
 	
 	// Update is called once per frame
@@ -78,8 +87,14 @@ public class TouchUIBehaviour : UIBehaviour {
 		}
 	}
 
+	void UpdateTurnUI () {
+
+		endTurnButton.enabled = !GameplayManager.SharedInstance ().isRealtime;
+	}
+
 	void UpdateUIForSelectedEntity () {
 
+		UpdateTurnUI ();
 		UpdateCommanderStats ();
 		UpdateSelectedEntityCommands ();
 		UpdateSelectedEntityInfo ();
@@ -166,7 +181,7 @@ public class TouchUIBehaviour : UIBehaviour {
 		}
 	}
 
-	// ###### Raycast ########
+	#region Raycast
 
 	void RaycastForSelection () {
 
@@ -244,4 +259,6 @@ public class TouchUIBehaviour : UIBehaviour {
 
 		return isPointerOverGameObject;
 	}
+
+	#endregion
 }

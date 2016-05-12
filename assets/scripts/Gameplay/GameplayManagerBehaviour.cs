@@ -25,5 +25,6 @@ public class GameplayManagerBehaviour : MonoBehaviour {
 	void Update () {
 	
 		GameplayManager.SharedInstance ().UpdateCommanders ();
+		GameplayManager.SharedInstance ().UpdateActivePhaseTimer (Time.deltaTime);
 	}
 }

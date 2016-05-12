@@ -21,7 +21,7 @@ public class GameplayManager {
 	GameplayManager () {
 
 		commanders = new List <Commander> ();
-		isRealtime = true;
+		isRealtime = false;
 		lastEntityIdForCommanders = new Dictionary<Commander, int>();
 	}	
 
@@ -164,4 +164,31 @@ public class GameplayManager {
 	}
 
 	#endregion
+
+	#region Turns logic
+
+	protected float activePhaseLength = 10;
+	protected float activePhaseTimerCurrentValue;
+
+	public void UpdateActivePhaseTimer(float deltaTime) {
+
+		if (activePhaseTimerCurrentValue < activePhaseLength) {
+			
+			activePhaseTimerCurrentValue += deltaTime;
+		}
+
+		if (activePhaseTimerCurrentValue > activePhaseLength) {
+
+			isRealtime = false;
+		}
+	}
+
+	public void EndTurn () {
+
+		activePhaseTimerCurrentValue = 0;
+		isRealtime = true;
+	}
+
+	#endregion
+
 }
