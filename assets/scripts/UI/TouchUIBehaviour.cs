@@ -24,6 +24,7 @@ public class TouchUIBehaviour : UIBehaviour {
 	public Button button5;
 
 	// info labels
+	public Text commanderStatsText;
 	public Text commanderInfoText;
 	public Text idInfoText;
 	public Text classInfoText;
@@ -79,6 +80,7 @@ public class TouchUIBehaviour : UIBehaviour {
 
 	void UpdateUIForSelectedEntity () {
 
+		UpdateCommanderStats ();
 		UpdateSelectedEntityCommands ();
 		UpdateSelectedEntityInfo ();
 	}
@@ -116,6 +118,11 @@ public class TouchUIBehaviour : UIBehaviour {
 				}
 			}
 		}
+	}
+
+	void UpdateCommanderStats() {
+
+		commanderStatsText.text = "B+U count: " + activeCommander.EntitiesCount ().ToString ();
 	}
 
 	void UpdateSelectedEntityInfo () {

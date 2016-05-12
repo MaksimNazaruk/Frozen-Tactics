@@ -33,7 +33,7 @@ public class GameplayManager {
 
 		foreach (Commander aCommander in commanders) {
 
-			Debug.Log ("Commander " + aCommander.commanderId.ToString() + " has " + aCommander.EntitiesCount() + " units");
+			// call some update for commander
 		}
 	}
 
