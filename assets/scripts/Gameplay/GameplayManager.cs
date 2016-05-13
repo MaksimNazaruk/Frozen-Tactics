@@ -29,12 +29,24 @@ public class GameplayManager {
 
 	protected List<Commander> commanders;
 
-	public void UpdateCommanders() {
+	protected void UpdateAICommands () {
 
 		foreach (Commander aCommander in commanders) {
 
-			// call some update for commander
+			if (aCommander.commanderType == CommanderType.CPUCommanderType) {
+
+				CPUCommander cpuCommander = aCommander as CPUCommander;
+				cpuCommander.UpdateAI ();
+			}
 		}
+	}
+
+	public void UpdateCommanders() {
+
+//		foreach (Commander aCommander in commanders) {
+//
+//			// call some update for commander
+//		}
 	}
 
 	public Commander CommanderForId (int commanderId) {
@@ -177,14 +189,18 @@ public class GameplayManager {
 
 	public void UpdateActivePhaseTimer(float deltaTime) {
 
-		if (activePhaseTimerCurrentValue > 0) {
+		if (isRealtime) {
 			
-			activePhaseTimerCurrentValue -= deltaTime;
-		}
+			if (activePhaseTimerCurrentValue > 0) {
+			
+				activePhaseTimerCurrentValue -= deltaTime;
+			}
 
-		if (activePhaseTimerCurrentValue < 0) {
+			if (activePhaseTimerCurrentValue < 0) {
 
-			isRealtime = false;
+				isRealtime = false;
+				CommandPhaseBegan ();
+			}
 		}
 	}
 
@@ -197,6 +213,16 @@ public class GameplayManager {
 
 		activePhaseTimerCurrentValue = activePhaseLength;
 		isRealtime = true;
+		ActivePhaseBegan ();
+	}
+
+	protected void ActivePhaseBegan () {
+
+	}
+
+	protected void CommandPhaseBegan () {
+
+		UpdateAICommands ();
 	}
 
 	#endregion

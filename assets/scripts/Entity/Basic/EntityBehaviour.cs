@@ -51,6 +51,10 @@ public class EntityBehaviour : MonoBehaviour {
 			
 			stats.commanderId = editorCommanderId;
 			stats.id = GameplayManager.SharedInstance ().NextEntityIdForCommanderId (stats.commanderId);
+			Commander commander = GameplayManager.SharedInstance ().CommanderForId (stats.commanderId);
+			if (commander != null) {
+				commander.RegisterEntity (this);
+			}
 		}
 	}
 
@@ -100,6 +104,33 @@ public class EntityBehaviour : MonoBehaviour {
 
 	#region Actions
 
+	// TODO: consider using action types instead to avoid using string comparisons
+	/// <summary>
+	/// Gets the action with title.
+	/// </summary>
+	/// <returns>Action with input title.</returns>
+	/// <param name="actionTitle">Action title.</param>
+	public EntityAction GetActionWithTitle(string actionTitle) {
+
+		EntityAction foundAction = null;
+
+		foreach (EntityAction action in availableActions) {
+
+			if (action.title == actionTitle) {
+
+				foundAction = action;
+				break;
+			}
+		}
+
+		return foundAction;
+	}
+
+	/// <summary>
+	/// Self-damage for debug purposes
+	/// </summary>
+	/// <param name="target">Target.</param>
+	/// <param name="isFinished">Is finished.</param>
 	void AutoDamage(ActionTarget target, out bool isFinished) {
 
 		stats.currentHealth -= 100;
@@ -124,28 +155,6 @@ public class EntityBehaviour : MonoBehaviour {
 
 		MeshRenderer selectionRenderer = selectionObject.GetComponent<MeshRenderer> ();
 		selectionRenderer.enabled = IsSelected;
-	}
-
-	// TODO: consider using action types instead to avoid using string comparisons
-	/// <summary>
-	/// Gets the action with title.
-	/// </summary>
-	/// <returns>Action with input title.</returns>
-	/// <param name="actionTitle">Action title.</param>
-	public EntityAction GetActionWithTitle(string actionTitle) {
-
-		EntityAction foundAction = null;
-
-		foreach (EntityAction action in availableActions) {
-
-			if (action.title == actionTitle) {
-
-				foundAction = action;
-				break;
-			}
-		}
-
-		return foundAction;
 	}
 
 	/// <summary>

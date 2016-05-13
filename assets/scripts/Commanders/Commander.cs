@@ -10,7 +10,7 @@ public class Commander {
 	public int commanderId;
 	public CommanderType commanderType;
 
-	List<WeakReference> entities;
+	protected List<WeakReference> entities;
 
 	public Commander() {
 
@@ -43,6 +43,40 @@ public class Commander {
 	public int EntitiesCount() {
 
 		return entities.Count;
+	}
+
+	// TODO: consider count only on register/forget to avoid processing all the entities every time
+	public int BuildingsCount () {
+
+		int count = 0;
+
+		foreach (WeakReference anEntityReference in entities) {
+
+			EntityBehaviour entityBehaviour = anEntityReference.Target as EntityBehaviour;
+			if (entityBehaviour.stats.basicType == EntityStats.BasicType.BasicTypeBuilding) {
+
+				count++;
+			}
+		}
+
+		return count;
+	}
+
+	// TODO: consider count only on register/forget to avoid processing all the entities every time
+	public int UnitsCount () {
+
+		int count = 0;
+
+		foreach (WeakReference anEntityReference in entities) {
+
+			EntityBehaviour entityBehaviour = anEntityReference.Target as EntityBehaviour;
+			if (entityBehaviour.stats.basicType == EntityStats.BasicType.BasicTypeUnit) {
+
+				count++;
+			}
+		}
+
+		return count;
 	}
 
 	#endregion

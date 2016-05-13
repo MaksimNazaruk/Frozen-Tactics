@@ -120,7 +120,7 @@ public class TouchUIBehaviour : UIBehaviour {
 			aButton.onClick.RemoveAllListeners();
 		}
 
-		if (selectedEntity != null) {
+		if (selectedEntity != null && !GameplayManager.SharedInstance ().IsRealtime()) {
 
 			if (selectedEntity.stats.commanderId == activeCommander.commanderId) {
 
@@ -147,7 +147,7 @@ public class TouchUIBehaviour : UIBehaviour {
 
 	void UpdateCommanderStats() {
 
-		commanderStatsText.text = "B+U count: " + activeCommander.EntitiesCount ().ToString ();
+		commanderStatsText.text = "B: " + activeCommander.BuildingsCount ().ToString () + " U: " + activeCommander.UnitsCount ().ToString ();
 	}
 
 	void UpdateSelectedEntityInfo () {
