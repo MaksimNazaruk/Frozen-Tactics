@@ -89,7 +89,17 @@ public class TouchUIBehaviour : UIBehaviour {
 
 	void UpdateTurnUI () {
 
-		endTurnButton.enabled = !GameplayManager.SharedInstance ().isRealtime;
+		if (GameplayManager.SharedInstance ().IsRealtime ()) {
+
+			float activePhaseTimeLeft = GameplayManager.SharedInstance ().ActivePhaseTimeLeft ();
+			endTurnButton.GetComponentInChildren<Text> ().text = activePhaseTimeLeft.ToString ("0") + " s left";
+
+		} else {
+
+			endTurnButton.GetComponentInChildren<Text> ().text = "End turn";
+		}
+
+		endTurnButton.interactable = !GameplayManager.SharedInstance ().IsRealtime ();
 	}
 
 	void UpdateUIForSelectedEntity () {

@@ -182,7 +182,7 @@ public class EntityBehaviour : MonoBehaviour {
 	/// </summary>
 	protected virtual void Update () {
 
-		if (GameplayManager.SharedInstance ().isRealtime) {
+		if (GameplayManager.SharedInstance ().IsRealtime ()) {
 			UpdateRealTime ();
 		} else {
 			UpdateFrozenTime ();

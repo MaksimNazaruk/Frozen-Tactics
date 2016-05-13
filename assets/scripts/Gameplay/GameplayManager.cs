@@ -14,7 +14,7 @@ public class GameplayManager {
 		return sharedInstance;
 	}
 
-	public bool isRealtime;
+	protected bool isRealtime;
 
 	Dictionary<Commander, int> lastEntityIdForCommanders;
 
@@ -167,25 +167,35 @@ public class GameplayManager {
 
 	#region Turns logic
 
+	public bool IsRealtime () {
+
+		return isRealtime;
+	}
+
 	protected float activePhaseLength = 10;
 	protected float activePhaseTimerCurrentValue;
 
 	public void UpdateActivePhaseTimer(float deltaTime) {
 
-		if (activePhaseTimerCurrentValue < activePhaseLength) {
+		if (activePhaseTimerCurrentValue > 0) {
 			
-			activePhaseTimerCurrentValue += deltaTime;
+			activePhaseTimerCurrentValue -= deltaTime;
 		}
 
-		if (activePhaseTimerCurrentValue > activePhaseLength) {
+		if (activePhaseTimerCurrentValue < 0) {
 
 			isRealtime = false;
 		}
 	}
 
+	public float ActivePhaseTimeLeft () {
+
+		return activePhaseTimerCurrentValue;
+	}
+
 	public void EndTurn () {
 
-		activePhaseTimerCurrentValue = 0;
+		activePhaseTimerCurrentValue = activePhaseLength;
 		isRealtime = true;
 	}
 

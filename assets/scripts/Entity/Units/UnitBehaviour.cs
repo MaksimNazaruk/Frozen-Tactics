@@ -137,14 +137,18 @@ public class UnitBehaviour : EntityBehaviour {
 
 		base.UpdateRealTime ();
 
-//		navMeshAgent.Resume ();
+		if (navMeshAgent.isActiveAndEnabled) {
+			navMeshAgent.Resume ();
+		}
 	}
 
 	protected override void UpdateFrozenTime () {
 
 		base.UpdateFrozenTime ();
 
-//		navMeshAgent.Stop ();
+		if (navMeshAgent.isActiveAndEnabled) {
+			navMeshAgent.Stop ();
+		}
 	}
 
 	#endregion
