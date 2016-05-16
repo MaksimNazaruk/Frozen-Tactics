@@ -10,6 +10,8 @@ public class CPUCommander : Commander {
 
 			BaseBuildingBehaviour mainBaseBehaviour = MainBaseBuildingBehaviour ();
 
+			Debug.Log("main base commander = " + mainBaseBehaviour.stats.commanderId);
+
 			if (mainBaseBehaviour) {
 				
 				// adding build default unit action
@@ -26,7 +28,7 @@ public class CPUCommander : Commander {
 		foreach (WeakReference anEntityReference in entities) {
 
 			EntityBehaviour entityBehaviour = anEntityReference.Target as EntityBehaviour;
-			if (entityBehaviour.stats.title == EntityLibrary.MainBase ().title) {
+			if (entityBehaviour is BaseBuildingBehaviour) {
 				baseBuildingBehaviour = entityBehaviour as BaseBuildingBehaviour;
 				break;
 			}

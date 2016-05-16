@@ -21,4 +21,9 @@ public class EntityStats {
 	public float visionRange;
 	public float attackRange;
 
+	public EntityStats () {
+
+		id = -1;
+	}
+
 }

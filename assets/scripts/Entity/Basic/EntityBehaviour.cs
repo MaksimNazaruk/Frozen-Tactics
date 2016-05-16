@@ -46,16 +46,6 @@ public class EntityBehaviour : MonoBehaviour {
 	protected virtual void SetupStats () {
 
 		stats = new EntityStats (); // TODO: consider creating new stats only once. Though currently this code is called only once.
-
-		if (editorCommanderId != -1) { // commanderId was set in the Editor
-			
-			stats.commanderId = editorCommanderId;
-			stats.id = GameplayManager.SharedInstance ().NextEntityIdForCommanderId (stats.commanderId);
-			Commander commander = GameplayManager.SharedInstance ().CommanderForId (stats.commanderId);
-			if (commander != null) {
-				commander.RegisterEntity (this);
-			}
-		}
 	}
 
 	protected virtual void SetupAvailableActions () {
@@ -93,11 +83,7 @@ public class EntityBehaviour : MonoBehaviour {
 		MeshRenderer selectionRenderer = selectionObject.GetComponent<MeshRenderer> ();
 		selectionRenderer.enabled = false;
 
-		// team color
-		if (teamFlagObject != null && stats != null) {
-
-			teamFlagObject.GetComponent<Renderer> ().material.color = GameplayManager.SharedInstance ().ColorForCommanderWithId (stats.commanderId);
-		}
+		UpdateEntityTeamUI ();
 	}
 
 	#endregion
@@ -157,6 +143,15 @@ public class EntityBehaviour : MonoBehaviour {
 		selectionRenderer.enabled = IsSelected;
 	}
 
+	protected void UpdateEntityTeamUI () {
+
+		// team color
+		if (teamFlagObject != null && stats != null) {
+
+			teamFlagObject.GetComponent<Renderer> ().material.color = GameplayManager.SharedInstance ().ColorForCommanderWithId (stats.commanderId);
+		}
+	}
+
 	/// <summary>
 	/// Adds the command with provided action.
 	/// </summary>
@@ -190,6 +185,21 @@ public class EntityBehaviour : MonoBehaviour {
 	/// Default Unity3D Update callback
 	/// </summary>
 	protected virtual void Update () {
+
+		if (stats.id == -1) {
+
+			if (editorCommanderId != -1) { // commanderId was set in the Editor
+
+				stats.commanderId = editorCommanderId;
+				stats.id = GameplayManager.SharedInstance ().NextEntityIdForCommanderId (stats.commanderId);
+				Commander commander = GameplayManager.SharedInstance ().CommanderForId (stats.commanderId);
+				if (commander != null) {
+					commander.RegisterEntity (this);
+				}
+
+				UpdateEntityTeamUI ();
+			}
+		}
 
 		if (GameplayManager.SharedInstance ().IsRealtime ()) {
 			UpdateRealTime ();

@@ -126,8 +126,8 @@ public class BuildingBehaviour : EntityBehaviour {
 	protected void FinishBuildingUnit () {
 		
 		// calculating unit position to be just outside of the building in derection of a rally point
-		Vector3 unitPosition = rallyPoint - gameObject.transform.position;
-		unitPosition = unitPosition.normalized * (stats.size / 2.0f);
+		Vector3 unitOffset = rallyPoint - gameObject.transform.position;
+		Vector3 unitPosition = gameObject.transform.position + unitOffset.normalized * (stats.size / 2.0f);
 
 		// creating unit
 		GameObject unitObject = GameplayManager.SharedInstance ().CreateEntity (currentBlueprint, stats.commanderId, unitPosition);
